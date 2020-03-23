@@ -11,7 +11,7 @@ $(window).ready(function(){
     weather_widget_1();
     weather_widget_2();
     
-    tabnews_api();
+    // tabnews_api();
     
     // 更新天氣鈕
     document.getElementById("update_weather").onclick = update_weather;
@@ -20,10 +20,10 @@ $(window).ready(function(){
         weather_widget_2();
     }
     
-    document.getElementById("update_news").onclick = update_news;
-    function update_news() {
-        tabnews_api();
-    }
+    // document.getElementById("update_news").onclick = update_news;
+    // function update_news() {
+    //     tabnews_api();
+    // }
     
     document.getElementById("home_page").onclick = refresh_home_page;
     function refresh_home_page() {
@@ -45,37 +45,37 @@ function getInputValue(event){
             $("#pagination").empty();
             $("#search_result").empty();
             document.getElementById("search_result").style.visibility = "hidden";
-            request_search_str_dataCnt(search_str);
+            request_search_str_dataCnt(search_str, 1);
         }
     }
 }
 
 // 詢問 server 關於該 search_str 有多少筆資料
-function request_search_str_dataCnt(search_str){
+function request_search_str_dataCnt(search_str, pageNum){
     var request_url = "http://localhost:8000/record_cnt.php";
-    var request_data = {search : search_str};
+    var request_data = {search : search_str, page : pageNum};
+
     $.ajax({
         type : "GET",
         url : request_url,
         data : request_data,
         success : function (response){
-            
-            // 記錄相應字串資料筆數
+            // // 記錄相應字串資料筆數
             var json = JSON.parse(response);
-            var search_str_fileCnt = String(json["match_file"]).trim();
-            var search_time = String(json["time"]);
-            var search_str_dataCnt = String(json["match_count"]);
+            var search_str_fileCnt = String(json["attribute"]["match_file"]).trim();
+            var search_time = String(json["attribute"]["time"]);
+            var search_str_dataCnt = String(json["attribute"]["match_count"]);
             
-            search_str_fileCnt = parseInt(search_str_fileCnt);
+            search_str_dataCnt = parseInt(search_str_dataCnt);
             
-            if(search_str_fileCnt > 0){
-                request_search_str_data(1);
+            if(search_str_dataCnt > 0){
                 var search_result = document.getElementById("search_result");
                 search_result.className = "alert alert-success";
                 search_result.innerText = "總計 " + search_str_dataCnt + " 項結果 (搜尋時間：" + search_time + " 秒)";
                 search_result.style.visibility = "visible";
+                create_record(json["article"]);
                 // 製作頁碼
-                create_pagination(1, search_str_fileCnt);
+                create_pagination(1, search_str, search_str_fileCnt);
             }
             else{
                 // 若相應數據為 0 ，則顯示 "無相關字詞" 訊息
@@ -86,25 +86,6 @@ function request_search_str_dataCnt(search_str){
             // table 顯示 server error 訊息
             // 通常是因為連線問題才導致
             create_server_error_msg();
-        }
-    });
-}
-
-// 請求與 search_str 相應的資料內容
-function request_search_str_data(pageNum){
-	// 請求 php 的網址
-    var request_url = "http://localhost:8000/read_file.php";
-
-    var request_data = {page : pageNum};	
-    
-    $.ajax({
-        type : "GET",
-        url : request_url,
-        data : request_data,
-        success : function (response){
-            var json_data = JSON.parse(response);
-            // 建構回傳之 table 項目
-            create_record(json_data);
         }
     });
 }
@@ -144,7 +125,7 @@ function create_record(record_item){
         
         var text = document.createElement("p");
         text.className = "text-muted";
-        text.append(highlight_content(search_str, record_item[itemNum]["body"]));
+        text.append(highlight_content(search_str, record_item[itemNum]["content"]));
         
         content_div.append(title);
         content_div.append(url);
@@ -170,7 +151,6 @@ function create_unfind_msg(search_time, search_str_dataCnt){
 function create_server_error_msg(){
     $("#pagination").empty();
     $("#record_container").empty();
-    
 }
 
 function interpret_str(search_str) {
@@ -338,18 +318,18 @@ function highlight_content(search_str, content) {
     
 }
 
-function create_pagination(cur_page, pageNum){
+function create_pagination(cur_page, str, pageNum){
     $("#pagination").empty();
     
     if(pageNum > 10){
-        create_pagination_list(1, 10, pageNum, cur_page);
+        create_pagination_list(1, 10, pageNum, cur_page, str);
     }
     else{
-        create_pagination_list(1, pageNum, pageNum, cur_page);
+        create_pagination_list(1, pageNum, pageNum, cur_page, str);
     }
 }
 
-function create_pagination_list(startPage, endPage, totalPage, activePage){
+function create_pagination_list(startPage, endPage, totalPage, activePage, str){
     var li = document.createElement("li");
     var a = document.createElement("a");
     var span_1 = document.createElement("span");
@@ -378,7 +358,7 @@ function create_pagination_list(startPage, endPage, totalPage, activePage){
     $("#pagination li").click(function(){
         $("#record_container").empty();
         
-        request_search_str_data($(this).text());
+        request_search_str_dataCnt(str, $(this).text());
         
         $("#pagination").empty();
         /* 重新製造頁碼 */
@@ -386,18 +366,18 @@ function create_pagination_list(startPage, endPage, totalPage, activePage){
         
         if(parseInt(current_page) + 4 <= totalPage){
             if (parseInt(current_page) - 4 >= 1){
-                create_pagination_list(parseInt(current_page) - 4, parseInt(current_page) + 4, totalPage, current_page);
+                create_pagination_list(parseInt(current_page) - 4, parseInt(current_page) + 4, totalPage, current_page, str);
             }
             else{
-                create_pagination_list(1, parseInt(current_page) + 4, totalPage, current_page);
+                create_pagination_list(1, parseInt(current_page) + 4, totalPage, current_page, str);
             }
         }
         else{
             if (parseInt(current_page) - 4 >= 1){
-                create_pagination_list(parseInt(current_page) - 4, totalPage, totalPage, current_page)
+                create_pagination_list(parseInt(current_page) - 4, totalPage, totalPage, current_page, str)
             }
             else{
-                create_pagination_list(1, totalPage, totalPage, current_page);
+                create_pagination_list(1, totalPage, totalPage, current_page, str);
             }
         }
     });
