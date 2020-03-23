@@ -1,0 +1,168 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title></title>
+        
+        <link rel="stylesheet" href="css/bootstrap.css">
+        <link rel="stylesheet" href="css/mdb.css">
+        <link rel="stylesheet" href="css/index.css">
+        <link rel="stylesheet" href="css/all.css">
+    </head>
+
+    <body style="font-family: ‘cwTeXFangSong’, serif; background-color: rgba(248, 248, 255)">
+        <!-- 置頂搜尋 block -->
+        <div class="z-depth-1 fixed-top wow fadeInDown">
+            <div class="row" style="background-color: white">
+                <div class="col col-3">
+                    <a id="home_page"><img class="img-fluid" src="icon/logo.png" width="200px" style="padding: 15px"></a>
+                </div>
+            
+                <div class="col-6" style="padding-top: 30px">
+                    <form class="form-inline active-purple-3 active-purple-4">
+                        <a><i class="fas fa-search" aria-hidden="true"></i></a>
+                        <input id="search_bar" class="form-control form-control-sm ml-3 w-75" type="text" placeholder="關鍵字" aria-label="Search" autocomplete="off">
+                        <input type="text" style="visibility: hidden">
+                    </form>
+                </div>
+                
+                <div class="col-1"></div>
+                <div class="col-2 text-right" style="padding-top: 40px; padding-right: 50px">
+                    <a><i class="fas fa-cog fa-lg text-muted"></i></a>
+                    <a style="padding: 15px"><i class="fas fa-user-circle fa-lg text-muted"></i></a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 顯示搜尋頁面 -->
+        <div style="min-height: 110vh">
+            <div class="container-fluid" style="max-width: 85%">
+                <!-- 用 Bootstrsp 的 card 作為每個條目的顯示方式 -->
+                <div id="block" class="block"></div>
+                <div class="alert" id="search_result" style="visibility: hidden"></div>
+                <div class="row">
+                    <div id="record_container" class="col-8">
+                        <div class="container my-5 py-3 z-depth-1 wow fadeInLeft" style="background-color: white" data-wow-delay="1.0s">
+                            <section class="px-md-5 mx-md-5 dark-grey-text text-center text-lg-left">
+                                <div class="row">
+                                    <div class="col-lg-7 mb-4 mb-lg-0">
+                                        <img width="200px"src="icon/logo.png" >
+                                        <h3 class="font-weight-bold" style="padding-top: 20px">歡迎使用 Tabnews lite</h3>
+                                        <p class="text-muted text-left">感謝您參與 Tabnews 開發者計畫，使用 Tabnews 團隊全新推出的「Tabnews lite 搜尋引擎」。<br><br>
+                                            
+                                        本產品仍位於開發階段，並非穩定版本，未來我們會持續努力更新，也請持續的關注我們，敬請期待更多功能的開放。</p>
+                                    </div>
+                                    <div class="col-lg-5 mb-4 mb-lg-0 d-flex align-items-center justify-content-center">
+                                        <i class="fas fa-search fa-10x" style="color: #34495e"></i>    
+                                    </div>
+                                </div>
+                            </section>
+                        </div>
+
+                        
+                        
+                        <div class="container my-5 z-depth-1 wow fadeInLeft" style="background-color: white" data-wow-delay="1.5s">
+                            <section class="dark-grey-text px-md-5 mx-md-3">
+                                <div class="row pr-lg-5">
+                                    <div class="col-md-4 d-flex align-items-center justify-content-center">
+                                        <div class="view">
+                                            <img src="icon/tabnews.png" class="img-fluid" alt="smaple image">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-1"></div>
+                                    <div class="col-md-7 d-flex align-items-center">
+                                        <div>
+                                            <h3 class="font-weight-bold mb-4" style="padding-top: 20px">Tabnews - 最好的新聞瀏覽器套件 📰</h3>
+
+                                            <p>喜歡我們的 Tabnews lite 嗎？ 不妨試試這款前陣子廣受好評的 Tabnews 瀏覽器套件！<br><br>
+                                            Tabnews 是一款專注於新聞閱覽體驗的瀏覽器套件，透過精心設計的介面，您僅需在方寸的畫面中點擊，便能得知天下事。<br><br>
+                                            還在等什麼呢？趕快下載來用用看吧！</p>
+                                            <div class="row">
+                                                <div class="col-3">
+                                                    <a id="download_btn" style="color: white"><button type="button" class="btn btn-orange btn-rounded mx-0">Download</button></a>
+                                                </div>
+                                                <div class="col-9 text-right" style="padding-top: 30px; padding-bottom: 30px">
+                                                    <span style="font-style: italic; color: #95a5a6">大小：8.9 MB</span>
+                                                </div>
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                        </div>
+                    </div>
+                    <div class="col-1">
+                    </div>
+                    <div class="col-3">
+                        <div class="container my-5 py-2 z-depth-1 wow fadeInRight" style="background-color: white" data-wow-delay="2.0s">
+                            <section class="px-md-1 dark-grey-text text-center text-lg-left">
+                                <span class="font-weight-bold">Weather</span>
+                                <a id="update_weather"><i class="fas fa-redo-alt text-muted float-right my-1"></i></a>
+                                <span id="update_time" class="text-muted float-right" style="font-size: 14px; margin-top: 3px; margin-right: 7px"></span>
+                                
+                                <hr style="margin-top: 5px; border-width: 2px; border-color: #576574">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <h4 id="location_1" class="font-weight-bold text-center h4-responsive" style="padding: 5px">花壇鄉</h4>
+                                        <div class="row">
+                                            <div class="col-2"></div>
+                                            <img id="location_1_img"class="col-8 text-center" src="icon/sun.png">
+                                            <div class="col-2"></div>
+                                        </div>
+                                        <h4 id="location_1_temp"class="font-weight-bold text-center h4-responsive" style="padding: 10px">18 度</h4>
+                                    </div>
+                                    <div class="col-6">
+                                        <h4 id="location_2" class="font-weight-bold text-center h4-responsive" style="padding: 5px">民雄鄉</h4>
+                                        <div class="row">
+                                            <div class="col-2"></div>
+                                            <img id="location_2_img" class="col-8 text-center" src="icon/sun.png">
+                                            <div class="col-2"></div>
+                                        </div>
+                                        <h4 id="location_2_temp" class="font-weight-bold text-center h4-responsive" style="padding: 10px">16 度</h4>
+                                    </div>
+                                </div>
+                            </section>
+                        </div>
+                        <div class="container my-5 py-2 z-depth-1 wow fadeInRight" style="background-color: white" data-wow-delay="2.5s">
+                            <section class="px-md-1 dark-grey-text text-center text-lg-left">
+                                <span class="font-weight-bold">News</span>
+                                <a id="update_news"><i class="fas fa-redo-alt text-muted float-right my-1"></i></a>
+                                <span id="update_news_time" class="text-muted float-right" style="font-size: 14px; margin-top: 3px; margin-right: 7px"></span>
+                                
+                                <hr style="margin-top: 5px; border-width: 2px; border-color: #576574">
+                                <div id="news_container">
+                                    <p class="text-center">獲取 Tabnews 新聞中...</p>
+                                </div>
+                            </section>
+                        </div>
+                    </div>
+                    
+                </div>
+                
+                <div>
+                    
+                </div>
+            </div>
+            <!-- 分頁 Pagination -->
+            <div style="visibility: inherit">
+                    <nav aria-label="Page navigation">
+                        <ul id="pagination" class="pagination pg-blue justify-content-center">
+                        </ul>
+                    </nav>
+            </div>  
+        </div>
+        
+        <footer class="page-footer font-small wow fadeInUp" style="background-color: #2c3e50">
+            <div class="footer-copyright text-center py-3">© 2019 Copyright:
+                <a>Tabnews Workstation</a>
+            </div>
+        </footer>
+    </body>
+    
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.js"></script>
+    
+    <script src="js/mdb.js"></script>
+    <script src="js/index.js"></script>
+</html>

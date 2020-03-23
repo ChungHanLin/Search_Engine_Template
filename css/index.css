@@ -1,0 +1,37 @@
+/* Top Block */
+@import url(https://fonts.googleapis.com/earlyaccess/cwtexfangsong.css);
+
+html {
+    scroll-behavior: smooth;
+}
+
+#search_bar {
+    font-size: 18px;
+    line-height: 31px;
+}
+
+#block {
+    padding-top: 130px;
+}
+
+a{
+    color : #222f3e;
+    text-decoration: none;
+}
+
+a:visited {
+    color: #222f3e;
+}
+
+a:hover {
+    font-weight: 600 !important;
+    color: #222f3e;
+    text-decoration: underline !important;
+    cursor: pointer;
+}
+a:active {
+    font-weight: 600 !important;
+    color: #222f3e;
+    text-decoration: underline !important;
+    cursor: pointer;
+}
