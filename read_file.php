@@ -20,45 +20,28 @@ function get_text($page){
 	}
 	else{
         $file = fopen($file_path, "r");
-        $record_num = -1;
+        $record_num = 0;
         
         $record_list = array();
-		$is_record = false;
-
+        $round = 0;
+        
         while(!feof($file)) {
-            $value = fgets($file);
-			if (strpos($value, '@Gais_REC') !== false) {
-				$is_record = true;
+            if ($round === 0) {
+                $title = fgets($file);
+            }
+            else if ($round === 1) {
+                $url = fgets($file);
+            }
+            else if ($round === 2) {
+                $content = fgets($file);
+
+                $record_list[$record_num] = array(
+                    "title"=>$title,
+                    "url"=>$url,
+                    "content"=>$content
+                );
                 $record_num++;
-            }
-            else if (strpos($value, '@url') !== false && $is_record === true) {
-                $url = substr($value, 5, -1);
-            }
-            else if (strpos($value, '@title') !== false && $is_record === true) {
-                $title = substr($value, 7, -1);
-            }
-            else if (strpos($value, '@keyword') !== false && $is_record === true) {
-                $keyword = substr($value, 9, -1);
-            }
-            else if (strpos($value, '@body') !== false && $is_record === true) {
-                if (strlen($value) > 8) {
-					$body = substr($value, 6, -1);
-                }
-                else {
-                    $value = fgets($file);
-                    $body = "";
-				}
-				$value = "";
-                while($value !== "@\n") {
-                    $body = $body . $value;
-                    $value = fgets($file);
-                }
-                
-                $record_list[$record_num] = array("url"=>$url,
-                                                  "title"=>$title,
-                                                  "keyword"=>$keyword,
-												  "body"=>$body);
-				$is_record = false;
+                $round = 0;
             }
         }
         echo json_encode($record_list);

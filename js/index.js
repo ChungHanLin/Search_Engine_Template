@@ -57,6 +57,8 @@ function request_search_str_dataCnt(search_str, pageNum){
 
     $.ajax({
         type : "GET",
+        dataType : 'javascipt',
+        contentType : 'application/javascipt; charset=utf-8',
         url : request_url,
         data : request_data,
         success : function (response){
@@ -73,6 +75,7 @@ function request_search_str_dataCnt(search_str, pageNum){
                 search_result.className = "alert alert-success";
                 search_result.innerText = "總計 " + search_str_dataCnt + " 項結果 (搜尋時間：" + search_time + " 秒)";
                 search_result.style.visibility = "visible";
+                document.getElementById("pagination").visibility = "";
                 create_record(json["article"]);
                 // 製作頁碼
                 create_pagination(1, search_str, search_str_fileCnt);
@@ -389,6 +392,8 @@ function weather_widget_1() {
     
     $.ajax({
         type : "GET",
+        dataType : 'javascipt',
+        contentType : 'application/javascipt; charset=utf-8',
         url : request_url,
         success : function (response){
             //var json_data = JSON.parse(response);
@@ -405,6 +410,8 @@ function weather_widget_2() {
     
     $.ajax({
         type : "GET",
+        dataType : 'javascipt',
+        contentType : 'application/javascipt; charset=utf-8',
         url : request_url,
         success : function (response){
             //var json_data = JSON.parse(response);
@@ -449,6 +456,8 @@ function tabnews_api() {
     
     $.ajax({
         type : "GET",
+        dataType : 'javascipt',
+        contentType : 'application/javascipt; charset=utf-8',
         data : 1,
         url : request_url,
         success : function (response){
