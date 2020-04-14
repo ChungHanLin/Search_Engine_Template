@@ -29,11 +29,12 @@ function get_search_text_num($search_str, $page){
                     'should' => [
                         'match' => ['title' => $search_arg],
                         'match' => ['content' => $search_arg]
-                    ]
+                    ],
                 ]
             ],
             'from' => $start,
-            'size' => 10
+            'size' => 10,
+	    'min_score' => 5.0
         ]
     ]);
     
@@ -66,6 +67,7 @@ function get_search_text_num($search_str, $page){
                 "url" => $result[$i]['_source']['url'],
                 "content" => $result[$i]['_source']['content']
             );
+            print_r($result[$i]);
         }
 
         $json_data = array(
@@ -74,7 +76,7 @@ function get_search_text_num($search_str, $page){
         );
     }
     
-    echo json_encode($json_data);
+    // echo json_encode($json_data);
 }
 
 // 將搜尋字串轉換為可讀取模式
