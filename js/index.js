@@ -11,7 +11,7 @@ $(window).ready(function(){
     weather_widget_1();
     weather_widget_2();
     
-    // tabnews_api();
+    tabnews_api();
     
     // 更新天氣鈕
     document.getElementById("update_weather").onclick = update_weather;
@@ -20,10 +20,10 @@ $(window).ready(function(){
         weather_widget_2();
     }
     
-    // document.getElementById("update_news").onclick = update_news;
-    // function update_news() {
-    //     tabnews_api();
-    // }
+    document.getElementById("update_news").onclick = update_news;
+    function update_news() {
+        tabnews_api();
+    }
     
     document.getElementById("home_page").onclick = refresh_home_page;
     function refresh_home_page() {
@@ -57,28 +57,27 @@ function request_search_str_dataCnt(search_str, pageNum){
 
     $.ajax({
         type : "GET",
-        dataType : 'javascipt',
-        contentType : 'application/javascipt; charset=utf-8',
         url : request_url,
         data : request_data,
         success : function (response){
             // // 記錄相應字串資料筆數
             var json = JSON.parse(response);
-            var search_str_fileCnt = String(json["attribute"]["match_file"]).trim();
+            var search_str_fileCnt;
             var search_time = String(json["attribute"]["time"]);
             var search_str_dataCnt = String(json["attribute"]["match_count"]);
             
             search_str_dataCnt = parseInt(search_str_dataCnt);
+            search_str_fileCnt = search_str_dataCnt / 10;
             
             if(search_str_dataCnt > 0){
                 var search_result = document.getElementById("search_result");
                 search_result.className = "alert alert-success";
                 search_result.innerText = "總計 " + search_str_dataCnt + " 項結果 (搜尋時間：" + search_time + " 秒)";
                 search_result.style.visibility = "visible";
-                document.getElementById("pagination").visibility = "";
+                document.getElementById("pagination").visibility = "visible";
                 create_record(json["article"]);
                 // 製作頁碼
-                create_pagination(1, search_str, search_str_fileCnt);
+                create_pagination(pageNum, search_str, search_str_fileCnt);
             }
             else{
                 // 若相應數據為 0 ，則顯示 "無相關字詞" 訊息
@@ -248,11 +247,13 @@ function highlight_content(search_str, content) {
         }
     }
     
+    
     if (indexArray.length == 0){
+        
         var key_in_title_block = document.createElement("div");
         var head_content = document.createElement("span");
         head_content.className = "text-truncate";
-        head_content.innerText = content;
+        head_content.innerText = content.substr(0, 30) + "...";
         key_in_title_block.append(head_content);
         return key_in_title_block;
     }
@@ -305,18 +306,24 @@ function highlight_content(search_str, content) {
         rest_num -= (indexArray[i].index - startIndex + indexArray[i].key.length);
         startIndex = indexArray[i].index + indexArray[i].key.length;
     }
-    
-    if(rest_num > 0){
+
+    if (boundary_1 == 0 && boundary_2 == 0) {
         before_str = document.createElement("span");
-        before_str.innerText = content.substr(startIndex, rest_num) + "...";
+        before_str.innerText = content.substr(0, 10) +　"...";
         content_block.append(before_str);
     }
     else {
-        before_str = document.createElement("span");
-        before_str.innerText = "...";
-        content_block.append(before_str);
+        if(rest_num > 0){
+            before_str = document.createElement("span");
+            before_str.innerText = content.substr(startIndex, rest_num) + "...";
+            content_block.append(before_str);
+        }
+        else {
+            before_str = document.createElement("span");
+            before_str.innerText = "...";
+            content_block.append(before_str);
+        }
     }
-    
     return content_block;
     
 }
@@ -392,8 +399,6 @@ function weather_widget_1() {
     
     $.ajax({
         type : "GET",
-        dataType : 'javascipt',
-        contentType : 'application/javascipt; charset=utf-8',
         url : request_url,
         success : function (response){
             //var json_data = JSON.parse(response);
@@ -410,8 +415,6 @@ function weather_widget_2() {
     
     $.ajax({
         type : "GET",
-        dataType : 'javascipt',
-        contentType : 'application/javascipt; charset=utf-8',
         url : request_url,
         success : function (response){
             //var json_data = JSON.parse(response);
@@ -452,12 +455,10 @@ function get_img(desc) {
 }
 
 function tabnews_api() {
-    var request_url = "http://www2.cs.ccu.edu.tw/~lcha105u/tabnews_server/all_news_page.php";	
+    var request_url = "http://www2.cs.ccu.edu.tw/~lcha105u/tabnews_server/all_news_page.php";
     
     $.ajax({
         type : "GET",
-        dataType : 'javascipt',
-        contentType : 'application/javascipt; charset=utf-8',
         data : 1,
         url : request_url,
         success : function (response){
